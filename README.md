@@ -1,6 +1,1 @@
 # math
-
-git pull
-git add .
-git commit -m "说明这次修改了什么"
-git push
