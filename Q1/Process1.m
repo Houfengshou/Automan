@@ -1,0 +1,57 @@
+function Process1(dr, times)
+    radius = 0.02;
+    M = floor(0.02/dr) + 1;
+    N = times * 14400 + 1; %附件一总时长
+    dt = 1/times;
+
+    rho = 820; %密度
+    cp = 2600; %比热
+    k = 0.36; %热传导
+    hT = 25; %对流换热
+    hm = 8e-7; %对流传质
+
+    data = readmatrix("附件1去噪后.xlsx");
+    time_points = data(:,1).';
+    t_setting = data(:,2).';
+    c_setting = data(:,3).';
+    TimePoints = 0:1/times:14400;
+    TSetting = interp1(time_points, t_setting, TimePoints, "pchip");
+    CSetting = interp1(time_points, c_setting, TimePoints, "pchip");
+
+    % ----------------------------------------------
+    FoT = (k*dt)/(rho*cp*dr^2);
+    rskinned = radius - dr/2;
+    VNstar =  (radius^2 - rskinned^2)/2;
+    aT = (dt*radius*hT)/(rho*cp*VNstar);
+    bT = (dt*rskinned*k)/(rho*cp*VNstar*dr);
+    
+    TResult = zeros(M, N);
+    TResult(:,1) = 28;
+    for n = 2:N
+       TResult(1,n) = (1 - 4*FoT)*TResult(1,n-1) + 4*FoT*TResult(2,n-1);
+       for m = 2:M-1
+            TResult(m,n) = FoT*(1-1/(2*m))*TResult(m-1,n-1) + (1 - 2*FoT)*TResult(m,n-1) + FoT*(1 + 1/(2*m))*TResult(m+1,n-1);
+       end
+       TResult(M,n) = (1 - aT - bT)*TResult(M,n-1) + bT*TResult(M-1,n-1)  + aT*TSetting(n-1);
+    end
+
+
+    CResult = zeros(M, N);
+    CResult(:,1) = 2.55;
+    for n = 2:N
+       Dprime = D1prime(D1(CResult(1,n-1)), D1(CResult(2,n-1)));
+       CResult(1,n) = (1 - (4*Dprime*dt)/(dr^2))*CResult(1,n-1) +(4*Dprime*dt)/(dr^2)*CResult(2,n-1);
+       for m = 2:M-1
+           A = dt/(m*dr^2)*(m-1/2)*D1prime(D1(CResult(m-1,n-1)),D1(CResult(m,n-1)));
+           B = dt/(m*dr^2)*(m+1/2)*D1prime(D1(CResult(m,n-1)),D1(CResult(m+1,n-1))); 
+           CResult(m,n) = A*CResult(m-1,n-1) + (1 - A - B)*CResult(m,n-1) + B*CResult(m+1,n-1);
+       end
+       aC = (dt*radius*hm)/VNstar;
+       bC = (dt*rskinned*D1prime(D1(CResult(M-1,n-1)), D1(CResult(M,n-1))))/(VNstar*dr);
+       CResult(M,n) = (1 - aC - bC)*CResult(M,n-1) + bC*CResult(M-1,n-1)  + aC*CSetting(n-1);
+    end
+
+    T = TResult(floor([0,0.5,1,1.5,2]*0.01/dr+1),[100,300,600,900,1200,1500,1800]*times).'
+    C = CResult(floor([0,0.5,1,1.5,2]*0.01/dr+1),[100,300,600,900,1200,1500,1800]*times).'
+
+end
