@@ -26,5 +26,5 @@ function ProcessCN(dr, times)
         V(index,1) = (index-1)*dr^2;
     end
     V(N+1,1) = (R^2 - (R-dr/2)^2)/2;
-
+    [MT,MC,KT,KC] = AssembleDryingSpatialMatrices(T, C, r, V, dr, hT, hm);
 end
