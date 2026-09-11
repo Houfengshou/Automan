@@ -1,0 +1,31 @@
+{
+  "queryChecksPassed": true,
+  "postQueryTemperatureError": 5.1329466828065051E-6,
+  "postQueryMoistureError": 2.4874383264261724E-7,
+  "refinement": [
+    [
+      1,
+      139,
+      57.473754686194894,
+      4.4408920985006262E-16
+    ],
+    [
+      2,
+      259,
+      57.472641527257075,
+      4.4408920985006262E-16
+    ],
+    [
+      4,
+      499,
+      57.4723244009534,
+      8.8817841970012523E-16
+    ]
+  ],
+  "tightToleranceTimeHours": 57.472398789063952,
+  "toleranceDifferenceSeconds": 0.26779719799776558,
+  "crossingMoistureBeforeAfter": [
+    0.15000029130627798,
+    0.1499997087323246
+  ]
+}
