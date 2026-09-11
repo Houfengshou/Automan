@@ -6,16 +6,11 @@ function ProcessCN(dr, times)
 
     hT = 25; %对流换热
     hm = 8e-7; %对流传质
-    Tinf = 50; %最终环境温度恒定值
-    Cinf = 0.05; %最终环境湿度恒定值
 
     data = readmatrix("附件1去噪后.xlsx");
     time_points = data(:,1).';
     t_setting = data(:,2).';
     c_setting = data(:,3).';
-    TimePoints = 0:1/times:14400;
-    TSettings = interp1(time_points, t_setting, TimePoints, "pchip");
-    CSettings = interp1(time_points, c_setting, TimePoints, "pchip");
 
     r = (0:N)'*dr;
     T = 28.*ones(N + 1,1);
@@ -27,4 +22,5 @@ function ProcessCN(dr, times)
     end
     V(N+1,1) = (R^2 - (R-dr/2)^2)/2;
     [MT,MC,KT,KC] = AssembleDryingSpatialMatrices(T, C, r, V, dr, hT, hm);
-end
+ 
+end 
