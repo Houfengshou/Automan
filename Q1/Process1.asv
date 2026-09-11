@@ -43,7 +43,7 @@ function Process1(dr, times)
        CResult(1,n) = (1 - (4*Dprime*dt)/(dr^2))*CResult(1,n-1) +(4*Dprime*dt)/(dr^2)*CResult(2,n-1);
        for m = 2:M-1
            A = dt/((m-1)*dr^2)*((m-1)-1/2)*D1prime(D1(CResult(m-1,n-1)),D1(CResult(m,n-1)));
-           B = dt/((m-1)*dr^2)*((m-1)+1/2)*D1prime(D1(CResult(m,n-1)),D1(CResult(m+1,n-1))); 
+           B = dt/(m*dr^2)*(m+1/2)*D1prime(D1(CResult(m,n-1)),D1(CResult(m+1,n-1))); 
            CResult(m,n) = A*CResult(m-1,n-1) + (1 - A - B)*CResult(m,n-1) + B*CResult(m+1,n-1);
        end
        aC = (dt*radius*hm)/VNstar;

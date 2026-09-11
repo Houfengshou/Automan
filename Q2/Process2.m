@@ -29,17 +29,17 @@ function Process2(dr, times)
        TResult(1,n) = (1 - qT)*TResult(1,n-1) + qT*TResult(2,n-1);
        CResult(1,n) = (1 - qC)*CResult(1,n-1) + qC*CResult(2,n-1);
        for m = 2:M-1
-           AT = (dt*(m-1/2)*HarMean(k2(CResult(m-1,n-1)), k2(CResult(m,n-1))))/(H2(CResult(m,n-1))*m*dr^2);
-           BT = (dt*(m+1/2)*HarMean(k2(CResult(m,n-1)), k2(CResult(m+1,n-1))))/(H2(CResult(m,n-1))*m*dr^2);    
-           AC = (dt*(m-1/2)*HarMean(D2(TResult(m-1,n-1), CResult(m-1,n-1)), D2(TResult(m,n-1), CResult(m,n-1))))/(m*dr^2);
-           BC = (dt*(m+1/2)*HarMean(D2(TResult(m,n-1), CResult(m,n-1)), D2(TResult(m+1,n-1), CResult(m+1,n-1))))/(m*dr^2);
+           AT = (dt*((m-1)-1/2)*HarMean(k2(CResult(m-1,n-1)), k2(CResult(m,n-1))))/(H2(CResult(m,n-1))*(m-1)*dr^2);
+           BT = (dt*((m-1)+1/2)*HarMean(k2(CResult(m,n-1)), k2(CResult(m+1,n-1))))/(H2(CResult(m,n-1))*(m-1)*dr^2);    
+           AC = (dt*((m-1)-1/2)*HarMean(D2(TResult(m-1,n-1), CResult(m-1,n-1)), D2(TResult(m,n-1), CResult(m,n-1))))/((m-1)*dr^2);
+           BC = (dt*((m-1)+1/2)*HarMean(D2(TResult(m,n-1), CResult(m,n-1)), D2(TResult(m+1,n-1), CResult(m+1,n-1))))/((m-1)*dr^2);
            TResult(m,n) = AT*TResult(m-1,n-1) + (1 - AT - BT)*TResult(m,n-1) + BT*TResult(m+1,n-1);
            CResult(m,n) = AC*CResult(m-1,n-1) + (1 - AC - BC)*CResult(m,n-1) + BC*CResult(m+1,n-1);
        end
        aT = (dt*radius*hT)/(H2(CResult(M,n-1))*VNstar);
-       bT = (dt*rskinned*HarMean(k2(CResult(m-1,n-1)), k2(CResult(m,n-1))))/(H2(CResult(M,n-1))*VNstar*dr);   
+       bT = (dt*rskinned*HarMean(k2(CResult(M-1,n-1)), k2(CResult(M,n-1))))/(H2(CResult(M,n-1))*VNstar*dr);   
        aC = dt*radius*hm/VNstar;
-       bC = (dt*rskinned*HarMean(D2(TResult(M-1,n-1), CResult(m-1,n-1)), D2(TResult(M,n-1), CResult(M,n-1))))/(VNstar*dr);
+       bC = (dt*rskinned*HarMean(D2(TResult(M-1,n-1), CResult(M-1,n-1)), D2(TResult(M,n-1), CResult(M,n-1))))/(VNstar*dr);
        TResult(M,n) = (1 - aT - bT)*TResult(M,n-1) + bT*TResult(M-1,n-1) + aT*TSetting(n-1);
        CResult(M,n) = (1 - aC - bC)*CResult(M,n-1) + bC*CResult(M-1,n-1) + aC*CSetting(n-1);
     end
