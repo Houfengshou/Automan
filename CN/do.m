@@ -1,1 +1,3 @@
-[T,C,t] = ProcessCN(0.001/18,2);
+s.dr = [1,6,30];
+s.times = 2;
+SensitivityAnalysis(@Process, s, 1, 1);
