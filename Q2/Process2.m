@@ -55,7 +55,7 @@ function Process2(dr, times)
        CResult(M,n) = (1 - aC - bC)*CResult(M,n-1) + bC*CResult(M-1,n-1) + aC*CSetting;
     end
 
-    % T = TResult(floor([0,0.5,1,1.5,2]*0.01/dr+1),floor([0.5,1,1.5,2,2.5,3]*60*60*times + 1)).'
-    % C = CResult(floor([0,0.5,1,1.5,2]*0.01/dr+1),floor([0.5,1,1.5,2,2.5,3]*60*60*times + 1)).'
+    T = TResult(floor([0,0.5,1,1.5,2]*0.01/dr+1),floor([0.5,1,1.5,2,2.5,3]*60*60*times + 1)).'
+    C = CResult(floor([0,0.5,1,1.5,2]*0.01/dr+1),floor([0.5,1,1.5,2,2.5,3]*60*60*times + 1)).'
 
 end
