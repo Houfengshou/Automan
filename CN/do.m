@@ -1,1 +1,1 @@
-[T,C,t] = ProcessCN(0.001/9,1);
+[T,C,t] = ProcessCN(0.001/18,2);
