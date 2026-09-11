@@ -17,7 +17,7 @@ function geometry = ShrinkingRadius(timeSeconds,N)
         {'scalar','real','finite','integer','>=',2});
 
     % 当前外半径
-    R = CalculateDryingRadiusMeters(timeSeconds);
+    R = RadiusMeters(timeSeconds);
 
     % N固定，真实步长随半径变化
     dr = R/N;
