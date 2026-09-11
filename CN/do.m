@@ -1,3 +1,1 @@
-s.dr = [1,6,30];
-s.times = 2;
-SensitivityAnalysis(@Process, s, 1, 1);
+ProcessCNdata(0.001/648, 2);
