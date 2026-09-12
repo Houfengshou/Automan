@@ -1,3 +1,4 @@
+ProcessCNdata(0.001/648, 2);
 function [T,C,t] = ProcessCNdata(dr,times)
 
     R = 0.02;

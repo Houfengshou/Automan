@@ -1,1 +1,1 @@
-ProcessCNdata(0.001/648, 2);
+ProcessCN(0.001/9, 2)
