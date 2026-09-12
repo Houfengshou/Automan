@@ -1,7 +1,7 @@
 clc; clear; close all;
 
 
-filePath = 'D:\HuaweiMoveData\Users\Darian\Desktop\MathModeling\附件\附件1.xlsx';
+filePath = '.\附件\附件1.xlsx';
 
 if ~isfile(filePath)
     error('未找到文件：%s', filePath);
@@ -55,6 +55,5 @@ fprintf('对比图已保存到：%s\n', figFile);
 
 rmse_temp = sqrt(mean((temp - temp_smooth).^2));
 rmse_moist = sqrt(mean((moisture - moisture_smooth).^2));
-fprintf('\n=== 去噪残差（RMS）评估 ===\n');
 fprintf('温度      RMS = %.6f\n', rmse_temp);
 fprintf('水分浓度  RMS = %.6f\n', rmse_moist);

@@ -1,1 +1,0 @@
-HarMean(D2(TResult(1,n-1), CResult(1,n-1)), D2(TResult(2,n-1), CResult(2,n-1)))

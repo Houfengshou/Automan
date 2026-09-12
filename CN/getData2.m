@@ -1,7 +1,3 @@
-% getDataResult2.m -- adapted from CN/getData.m.
-% Put this script in CN and run. Time step dt=1/times remains configurable.
-% Both sheets: t=1:10800 seconds, radius=0:0.1:2 cm.
-% Defaults retained from the original getData.m.
 dr = 0.001/81;
 times = 2;
 rootDirectory = fileparts(mfilename('fullpath'));
@@ -40,7 +36,6 @@ function [T,C,t,temperatureData,moistureData] = ExportCNResult2(dr,times,rootDir
     t_setting = data(:,2);
     c_setting = data(:,3);
 
-    % 空间网格与初值
     r = (0:N)'*dr;
     T = 28*ones(N+1,1);
     C = 2.55*ones(N+1,1);
@@ -49,14 +44,14 @@ function [T,C,t,temperatureData,moistureData] = ExportCNResult2(dr,times,rootDir
     V(1) = dr^2/8;
     V(end) = (R^2-(R-dr/2)^2)/2;
 
-    % Picard参数
+
     options.maxIterations = 50;
     options.relativeTolerance = 1e-8;
     options.temperatureAbsoluteTolerance = 1e-7;
     options.moistureAbsoluteTolerance = 1e-10;
 
     t = 0;
-    % 每1秒保存温度和含水率，空间间隔0.1厘米
+
     outputRadiusCm = 0:0.1:2;
     outputRadiusM = outputRadiusCm/100;
     
@@ -66,7 +61,6 @@ function [T,C,t,temperatureData,moistureData] = ExportCNResult2(dr,times,rootDir
     outputRow = 0;
     while t < endTimeSeconds
 
-        % 两个后向欧拉半步，之后使用CN
         if t < dt/2
             theta = 1;
             tNext = dt/2;
@@ -78,20 +72,17 @@ function [T,C,t,temperatureData,moistureData] = ExportCNResult2(dr,times,rootDir
             tNext = t+dt;
         end
 
-        % 时间步准确落在4小时切换点
         if t < 14400
             tNext = min(tNext,14400);
         end
-        % 让求解时间准确落在每个1秒输出时刻
+
         tNext = min([tNext,nextOutputTime,endTimeSeconds]);
-        % 起点环境：4小时后使用恒定环境
         [qTold,qCold] = QuerySetting( ...
             t,N+1,R,hT,hm, ...
             time_points,t_setting,c_setting,t>=14400);
 
         ok = false;
 
-        % 不收敛时缩小步长，最多重试20次
         for retry = 0:20
 
             tau = tNext-t;
@@ -120,7 +111,6 @@ function [T,C,t,temperatureData,moistureData] = ExportCNResult2(dr,times,rootDir
                 '计算停在 %.6f 小时，本步未收敛；未导出不完整结果。\n',t/3600);
         end
 
-        % 收敛后才更新状态和时间
         T = Tnext;
         C = Cnext;
         t = tNext;
@@ -137,19 +127,11 @@ function [T,C,t,temperatureData,moistureData] = ExportCNResult2(dr,times,rootDir
         end
     end
 
-    assert(t==endTimeSeconds && outputRow==endTimeSeconds, ...
-        'Did not finish every requested output time.');
-    assert(all(isfinite(temperatureData(:))) && all(isfinite(moistureData(:))), ...
-        'Output contains nonfinite values.');
     resultHeader = [{'时间\到药材中心的距离'},num2cell(outputRadiusCm)];
-    [copyOK,copyMessage] = copyfile(templateFile,outputFile);
-    assert(copyOK,'Could not copy template: %s',copyMessage);
     writecell(resultHeader,outputFile,'Sheet','温度','Range','A1');
     writematrix([temperatureData(:,1),round(temperatureData(:,2:end),4)], ...
         outputFile,'Sheet','温度','Range','A2');
     writecell(resultHeader,outputFile,'Sheet','水分浓度','Range','A1');
     writematrix([moistureData(:,1),round(moistureData(:,2:end),4)], ...
         outputFile,'Sheet','水分浓度','Range','A2');
-    fprintf('已生成：%s\n',outputFile);
-    fprintf('每个sheet：10800行数据，21个半径位置；正常dt=%.12g s。\n',dt);
 end

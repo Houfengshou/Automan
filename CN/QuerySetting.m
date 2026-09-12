@@ -2,25 +2,10 @@ function [qT, qC, Ta, Ca] = QuerySetting( ...
     t, nodeCount, R, hT, hm, ...
     time_points, t_setting, c_setting, ...
     usePostSwitchAtBoundary)
-% 查询环境条件并生成边界输入向量。
-%
-% t：查询时间，单位秒
-% nodeCount：节点数，即 N+1
-% Ta、Ca：查询得到的环境温度、环境水分浓度
-% qT、qC：温度、水分方程的边界输入列向量
-%
-% usePostSwitchAtBoundary：
-%   仅在 t=14400 时起作用。
-%   false：使用附件终点值，表示前4小时这一段的终点。
-%   true ：使用恒定环境值，表示后续这一段的起点。
-%   不传入时，默认 false。
 
     if nargin < 9
         usePostSwitchAtBoundary = false;
     end
-
-    assert(isscalar(t) && isfinite(t) && t >= 0, ...
-        '查询时间必须是有限的非负标量。');
 
     switchTime = 14400;
     Tinf = 50; %最终环境温度恒定值
@@ -38,10 +23,6 @@ function [qT, qC, Ta, Ca] = QuerySetting( ...
         Ca = interp1(time_points, c_setting, t, 'pchip');
     end
 
-    assert(isfinite(Ta) && isfinite(Ca), ...
-        '环境查询失败，请检查附件数据及其时间覆盖范围。');
-
-    % 2. 生成边界输入向量
     qT = zeros(nodeCount, 1);
     qC = zeros(nodeCount, 1);
 

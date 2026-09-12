@@ -94,7 +94,6 @@ function result = SensitivityAnalysis(func, ParamStruct, ploting, saving, ax)
 
 
     if saving
-        % 表头 = 各变量名 + 结果列
         colNames = [cellstr(varnames); {'result'}];
         T = array2table(result, 'VariableNames', colNames);
         writetable(T, 'SensitivityResult.csv');

@@ -1,8 +1,5 @@
 function out = AntiRadixIterator(dims)
-%ANTIRADIXITERATOR 迭代器模式，末位优先变化
-% 调用方式
-%   AntiRadixIterator([2,3,4])   % 传入维度，初始化迭代器，无有效输出
-%   out = AntiRadixIterator      % 无输入参数，获取下一个组合；返回[]代表迭代结束
+
     persistent current dims_val n is_done
     
     if nargin > 0

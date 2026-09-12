@@ -1,7 +1,6 @@
 function [Tnew,Cnew,converged,iter] = Picard( ...
     Told,Cold,r,V,dr,hT,hm,tau,theta,qTold,qCold,qTnext,qCnext,options)
 
-    % 输入均使用列向量
     Tnew = Told;
     Cnew = Cold;
     converged = false;
@@ -21,7 +20,6 @@ function [Tnew,Cnew,converged,iter] = Picard( ...
 
     for iter = 1:options.maxIterations
 
-        % 固定当前物性，求解候选状态
         Tc = (MT+theta*tau*KT) \ (MT*baseT+theta*tau*qTnext);
         Cc = (MC+theta*tau*KC) \ (MC*baseC+theta*tau*qCnext);
 
@@ -35,7 +33,6 @@ function [Tnew,Cnew,converged,iter] = Picard( ...
         scaleC = options.moistureAbsoluteTolerance ...
             + options.relativeTolerance.*max(abs(Cc),abs(Cold));
 
-        % 用候选状态更新物性，检查非线性残差
         [MT,MC,KT,KC] = AssembleDryingSpatialMatrices( ...
             Tc,Cc,r,V,dr,hT,hm);
 
