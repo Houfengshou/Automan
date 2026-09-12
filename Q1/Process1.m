@@ -51,7 +51,8 @@ function Process1(dr, times)
        CResult(M,n) = (1 - aC - bC)*CResult(M,n-1) + bC*CResult(M-1,n-1)  + aC*CSetting(n-1);
     end
 
-    T = TResult(floor([0,0.5,1,1.5,2]*0.01/dr+1),[100,300,600,900,1200,1500,1800]*times + 1).'
-    C = CResult(floor([0,0.5,1,1.5,2]*0.01/dr+1),[100,300,600,900,1200,1500,1800]*times + 1).'
-
+    % T = TResult(round([0:0.1:2]*0.01/dr+1), round([0:1:1800]+1)).';
+    % C = CResult(round([0:0.1:2]*0.01/dr+1), round([0:1:1800]+1)).';
+    % writematrix(round(T,4), "T.xlsx");
+    % writematrix(round(C,4), "C.xlsx");    
 end
