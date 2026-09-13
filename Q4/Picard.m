@@ -1,5 +1,5 @@
 function [Tnew,Cnew,converged,iter] = Picard( ...
-    Told,Cold,geometryOld,geometryNext,hT,hm, ...
+    Told,Cold,geometryOld,geometryNext,hT,hm,D0, ...
     tau,theta,qTold,qCold,qTnext,qCnext,options)
 
     Tnew = Told;
@@ -8,7 +8,7 @@ function [Tnew,Cnew,converged,iter] = Picard( ...
     iter = 0;
 
     [MT,MC,KT,KC] = AssembleDryingSpatialMatrices( ...
-        Told,Cold,geometryOld.r,geometryOld.V,geometryOld.dr,hT,hm);
+        Told,Cold,geometryOld.r,geometryOld.V,geometryOld.dr,hT,hm,D0);
 
     FTold = MT \ (qTold-KT*Told);
     FCold = MC \ (qCold-KC*Cold);
@@ -20,7 +20,7 @@ function [Tnew,Cnew,converged,iter] = Picard( ...
     Cg = Cold;
 
     [MT,MC,KT,KC] = AssembleDryingSpatialMatrices( ...
-        Tg,Cg,geometryNext.r,geometryNext.V,geometryNext.dr,hT,hm);
+        Tg,Cg,geometryNext.r,geometryNext.V,geometryNext.dr,hT,hm,D0);
     for iter = 1:options.maxIterations
 
         Tc = (MT+theta*tau*KT) \ (MT*baseT+theta*tau*qTnext);
@@ -37,7 +37,7 @@ function [Tnew,Cnew,converged,iter] = Picard( ...
             + options.relativeTolerance.*max(abs(Cc),abs(Cold));
 
         [MT,MC,KT,KC] = AssembleDryingSpatialMatrices( ...
-            Tc,Cc,geometryNext.r,geometryNext.V,geometryNext.dr,hT,hm);
+            Tc,Cc,geometryNext.r,geometryNext.V,geometryNext.dr,hT,hm,D0);
 
         FT = MT \ (qTnext-KT*Tc);
         FC = MC \ (qCnext-KC*Cc);

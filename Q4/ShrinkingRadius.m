@@ -4,7 +4,7 @@ function geometry = ShrinkingRadius(timeSeconds,N)
         {'scalar','real','finite','integer','>=',2});
 
     R = RadiusMeters(timeSeconds);
-    dr = R/N
+    dr = R/N;
     r = (0:N)'*dr;
 
     V = r*dr;

@@ -1,5 +1,5 @@
 function [MT, MC, KT, KC] = AssembleDryingSpatialMatrices( ...
-    T, C, r, V, dr, hT, hm)
+    T, C, r, V, dr, hT, hm, D0)
 % 根据当前温度、含水率组装径向有限体积矩阵。
     T = T(:);
     C = C(:);
@@ -28,7 +28,7 @@ function [MT, MC, KT, KC] = AssembleDryingSpatialMatrices( ...
     cp = 1850 + 2150.*C./(C + 1);
     H = rho.*cp;
     k = 0.12 + 0.20.*C./(C + 1);
-    D = 4.2e-4.*exp(-0.30./C) ...
+    D = D0.*exp(-0.30./C) ...
         .*exp(-3850./(T + 273.15));
 
 

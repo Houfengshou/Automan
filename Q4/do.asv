@@ -11,9 +11,9 @@ SensitivityAnalysis(@Process, s, 1, 0, ax_target);
 s.hT = 8e-7;
 
 s.hm = [[0.95,1.05].*8e-7,10]
-SensitivityAnalysis(@Process, s, 1, 0, ax_target);
+Process4(0.001/9,2,25,8e-7,4.2e-4);
 s.hm = 8e-7;
 
-s.D0 = [[0.95,1.05].*4.2e-4,10]
-SensitivityAnalysis(@Process, s, 1, 0, ax_target);
-s.D0 = 4.2e-4;
+s.D0 = [[0.95,1.05].*8e-7,10]
+Process4(0.001/9,2,25,8e-7,4.2e-4);
+s.hm = 8e-7;
